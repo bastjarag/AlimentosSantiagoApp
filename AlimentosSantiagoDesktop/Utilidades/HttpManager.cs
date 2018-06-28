@@ -69,5 +69,26 @@ namespace AlimentosSantiagoDesktop.Utilidades
             else
                 tabla.DataSource = lista;
         }
+
+        public static bool SimplePut<T>(string url, T t)
+        {
+            var resultado = client.PutAsJsonAsync<T>(restUrl + url, t).Result;
+            if (resultado.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("Solicitud PUT exitosa");
+                return Convert.ToBoolean(resultado.Content.ReadAsStringAsync().Result);
+            }
+            return false;
+        }
+
+        public static void SimplePut<T>(string url, string id, T t)
+        {
+            string putUrl = restUrl + url + "/{" + id + "}";
+            HttpResponseMessage message = client.PutAsJsonAsync<T>(testUrl, t).Result;
+            if (message.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Actualización de " + t.GetType().Name);
+            }
+        }
     }
 }

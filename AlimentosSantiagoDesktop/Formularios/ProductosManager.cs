@@ -44,5 +44,34 @@ namespace AlimentosSantiagoDesktop.Formularios
             prodEscogido = null;
             btnBorrar.Enabled = false;
         }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            Producto producto = new Producto();
+            producto.nombre = tbxNombre.Text;
+            producto.descripcion = tbxDescripcion.Text;
+            producto.precio = (int)tbxPrecio.Value;
+            producto.stock = (int)tbxStock.Value;
+
+            if (prodEscogido != null)
+            {
+                producto.id = prodEscogido.id;
+                if (HttpManager.SimplePut<Producto>("producto", producto))
+                    MessageBox.Show("Producto actualizado");
+
+                prodEscogido = producto;
+                HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
+                return;
+            }
+            Task<string> respuesta = HttpManager.SimplePost<Producto>("producto", producto);
+            if (respuesta != null)
+            {
+                if (Convert.ToBoolean(respuesta.Result))
+                {
+                    MessageBox.Show("Producto almacenado con exito");
+                    HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
+                }
+            }
+        }
     }
 }
