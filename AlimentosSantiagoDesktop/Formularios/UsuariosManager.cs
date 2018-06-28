@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AlimentosSantiagoDesktop
+namespace AlimentosSantiagoDesktop.Formularios
 {
-    public partial class Form1 : Form
+    public partial class UsuariosManager : Form
     {
-        public Form1()
+        public UsuariosManager()
         {
             InitializeComponent();
         }
