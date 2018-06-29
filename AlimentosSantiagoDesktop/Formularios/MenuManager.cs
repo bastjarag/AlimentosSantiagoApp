@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AlimentosSantiagoDesktop.Utilidades;
+using AlimentosSantiagoDesktop.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +20,7 @@ namespace AlimentosSantiagoDesktop.Formularios
         public MenuManager()
         {
             InitializeComponent();
+            HttpManager.ListarDataGrid<Producto>("producto/productos_stock", ref )
         }
 
         private void Menu_FormClosed(object sender, FormClosedEventArgs e)

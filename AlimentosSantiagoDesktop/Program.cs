@@ -17,7 +17,7 @@ namespace AlimentosSantiagoDesktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ProductosManager());
+            Application.Run(new UsuariosManager());
         }
     }
 }

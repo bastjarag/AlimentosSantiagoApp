@@ -25,7 +25,6 @@ namespace AlimentosSantiagoDesktop.Formularios
         {
             InitializeComponent();
             HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
-
         }
 
         private void dgvProductos_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -43,6 +42,7 @@ namespace AlimentosSantiagoDesktop.Formularios
         {
             prodEscogido = null;
             btnBorrar.Enabled = false;
+            LimpiarCampos();
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -72,6 +72,29 @@ namespace AlimentosSantiagoDesktop.Formularios
                     HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
                 }
             }
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            if (prodEscogido == null)
+                return;
+
+            if (HttpManager.SimpleDelete("producto", prodEscogido.id.ToString()))
+            {
+                MessageBox.Show("Producto borrado.");
+                prodEscogido = null;
+                HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
+                btnBorrar.Enabled = false;
+                LimpiarCampos();
+            }
+            else
+                MessageBox.Show("No se pudo borrar el producto.");
+        }
+
+        private void LimpiarCampos()
+        {
+            tbxNombre.Text = tbxDescripcion.Text = "";
+            tbxPrecio.Value = tbxStock.Value = 0;
         }
     }
 }

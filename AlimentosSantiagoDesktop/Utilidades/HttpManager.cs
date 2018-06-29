@@ -48,15 +48,50 @@ namespace AlimentosSantiagoDesktop.Utilidades
             return null;
         }
 
-        public static List<T> GetListar<T>(string url)
+        public static bool PostDescerializar<T>(string url, ref T t)
+        {
+            try
+            {
+                string respuesta = SimplePost<T>(url, t).Result;
+                t = JsonConvert.DeserializeObject<T>(respuesta);
+                return true;
+            }
+            catch (SocketException)
+            {
+                MessageBox.Show("Error para conectarse");
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Error para cargar nuevamente el objeto");
+            }
+            return false;
+        }
+
+        public static List<T> GetListar<T>(string path)
         {
             List<T> lista = new List<T>();
-            var respuesta = client.GetAsync(restUrl + url);
-            if (respuesta.Result.IsSuccessStatusCode)
+            var respuesta = client.GetAsync(restUrl + path);
+
+            try
             {
-                var contenido = respuesta.Result.Content;
-                lista = JsonConvert.DeserializeObject<List<T>>(contenido.ReadAsStringAsync().Result);
+                if (!respuesta.Result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Problemas de conexión");
+                    return new List<T>();
+                }
+            } catch (Exception exc)
+            {
+                if (exc is System.Net.WebException | exc is SocketException)
+                {
+                    MessageBox.Show("El servidor está apagado, contacte el administrador.");
+                    Application.Exit();
+                }
+                return new List<T>();
             }
+            Debug.WriteLine(restUrl + path);
+            var contenido = respuesta.Result.Content;
+            Debug.WriteLine(contenido.ReadAsStringAsync().Result);
+            lista = JsonConvert.DeserializeObject<List<T>>(contenido.ReadAsStringAsync().Result);
             return lista;
         }
 
@@ -76,7 +111,9 @@ namespace AlimentosSantiagoDesktop.Utilidades
             if (resultado.IsSuccessStatusCode)
             {
                 Debug.WriteLine("Solicitud PUT exitosa");
-                return Convert.ToBoolean(resultado.Content.ReadAsStringAsync().Result);
+                string result = resultado.Content.ReadAsStringAsync().Result;
+                Debug.WriteLine(result);
+                return result == "true";
             }
             return false;
         }
@@ -84,11 +121,23 @@ namespace AlimentosSantiagoDesktop.Utilidades
         public static void SimplePut<T>(string url, string id, T t)
         {
             string putUrl = restUrl + url + "/{" + id + "}";
-            HttpResponseMessage message = client.PutAsJsonAsync<T>(testUrl, t).Result;
-            if (message.IsSuccessStatusCode)
+            HttpResponseMessage respuesta = client.PutAsJsonAsync<T>(testUrl, t).Result;
+            if (respuesta.IsSuccessStatusCode)
             {
                 MessageBox.Show("Actualización de " + t.GetType().Name);
             }
+        }
+
+        public static bool SimpleDelete(string url, string id)
+        {
+            string deleteUrl = restUrl + url + "/" + id;
+            HttpResponseMessage respuesta = client.DeleteAsync(deleteUrl).Result;
+            if (respuesta.IsSuccessStatusCode)
+            {
+                return Convert.ToBoolean(respuesta.Content.ReadAsStringAsync().Result);
+            }
+            //loli
+            return false;
         }
     }
 }

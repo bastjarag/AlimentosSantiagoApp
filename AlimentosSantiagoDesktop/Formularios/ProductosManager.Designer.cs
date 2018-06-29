@@ -100,6 +100,7 @@
             this.btnBorrar.TabIndex = 10;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = true;
+            this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
             // 
             // btnLimpiar
             // 
@@ -107,7 +108,7 @@
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(88, 37);
             this.btnLimpiar.TabIndex = 9;
-            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.Text = "Nuevo";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
