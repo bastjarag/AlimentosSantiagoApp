@@ -17,15 +17,25 @@ namespace AlimentosSantiagoDesktop.Formularios
         public delegate void OnClose();
         public OnClose onClose;
 
+        private List<Producto> stockDisponible;
+        private List<Producto> menuDelDia;
         public MenuManager()
         {
             InitializeComponent();
-            HttpManager.ListarDataGrid<Producto>("producto/productos_stock", ref )
+            stockDisponible = HttpManager.GetListar<Producto>("producto/productos_stock");
+            lsProductosDisponibles.DataSource = stockDisponible;
         }
 
         private void Menu_FormClosed(object sender, FormClosedEventArgs e)
         {
-            onClose();
+            try
+            {
+                onClose();
+            }
+            catch (NullReferenceException)
+            {
+                Application.Exit();
+            }
         }
     }
 }
