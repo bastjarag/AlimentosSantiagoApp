@@ -56,5 +56,10 @@ namespace AlimentosSantiagoDesktop.Formularios
                 Debug.WriteLine(respuesta);
             }
         }
+
+        private void EmpresaEnConvenioManager_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

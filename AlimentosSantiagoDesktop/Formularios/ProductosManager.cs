@@ -27,6 +27,7 @@ namespace AlimentosSantiagoDesktop.Formularios
             HttpManager.ListarDataGrid<Producto>("producto", ref dgvProductos, out productos);
         }
 
+
         private void dgvProductos_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Debug.WriteLine("Llama al evento");
@@ -95,6 +96,24 @@ namespace AlimentosSantiagoDesktop.Formularios
         {
             tbxNombre.Text = tbxDescripcion.Text = "";
             tbxPrecio.Value = tbxStock.Value = 0;
+        }
+
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Hide();
+            MenuPrincipal menuP = new MenuPrincipal();
+            menuP.Show();           
+        }
+
+        private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
